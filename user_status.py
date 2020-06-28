@@ -1,57 +1,38 @@
 class UserStatus():
     def __init__(self, status_id, user_id, status_text):
-        '''
-        Class initialization
-        '''
-        pass
+        self.status_id = status_id
+        self.user_id = user_id
+        self.status_text = status_text
 
 class UserStatusCollection():
     def __init__(self):
-        '''
-        Class initialization
-        It is recommended to use a dictionary where the key
-        is status_id and the value is an instance of UserStatus        
-        '''
-        pass
+        self.database = {}
 
     def add_status(self, status_id, user_id, status_text):
-        '''
-        Adds a new status for a given user.
-        Requirements:
-        - status_id cannot already exist.
-        - status_text cannot be empty.
-        - Method returns False if there is any error.
-        - Otherwise, it returns True.
-        '''
-        pass
+        if status_id in self.database:
+            # Rejects new status if status_id already exists
+            return False
+        new_status = UserStatus(status_id, user_id, status_text)
+        self.database[status_id] = new_status
+        return True
 
-    def modify_status(self, status_id, status_text):
-        '''
-        Modifies an existing status
-        Requirements:
-        - The status_id needs to exist already, since you're modifying it.
-        - status_text cannot be empty.
-        - Method returns False for any error.
-        - Otherwise, it returns True.
-        '''
-        pass
+    def modify_status(self, status_id, user_id, status_text):
+        if status_id not in self.database:
+            # Rejects update is the status_id does not exist
+            return False
+        self.database[status_id].user_id = user_id
+        self.database[status_id].status_text = status_text
+        return True
 
     def delete_status(self, status_id):
-        '''
-        Deletes a status from the collection.
-        Requirements:
-        - status_id needs to exist in the collection.
-        - Returns False for any error.
-        - Otherwise, it returns True.
-        '''
-        pass
+        if status_id not in self.database:
+            # Fails if status does not exist
+            return False
+        del self.database[status_id]
+        return True
 
     def search_status(self, status_id):
-        ''' 
-        Searches for a status_id in the collection.
-        Requirements:
-        - If status_id exists in the collection, will return
-        the corresponding instance of UserStatus
-        - If status_id does not exist, it will return None.
-        '''       
-        pass
+        if status_id not in self.database:
+            # Fails if the status does not exist
+            return UserStatus(None, None, None)
+        return self.database[status_id]
