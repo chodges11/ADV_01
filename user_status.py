@@ -4,6 +4,7 @@ class UserStatus():
         self.user_id = user_id
         self.status_text = status_text
 
+
 class UserStatusCollection():
     def __init__(self):
         self.database = {}

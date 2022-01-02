@@ -1,6 +1,7 @@
 import users
 import user_status
 
+
 def init_user_collection():
     '''
     Creates and returns a new instance 
@@ -8,12 +9,14 @@ def init_user_collection():
     '''
     pass
 
+
 def init_status_collection():
     '''
     Creates and returns a new instance
     of UserStatusCollection
     '''
     pass
+
 
 def load_users(filename, user_collection):
     '''
@@ -31,6 +34,7 @@ def load_users(filename, user_collection):
     '''
     pass
 
+
 def save_users(filename, user_collection):
     '''
     Saves all users in user_collection into
@@ -44,6 +48,7 @@ def save_users(filename, user_collection):
     - Otherwise, it returns True.
     '''
     pass
+
 
 def load_status_updates(filename, status_collection):
     '''
@@ -61,6 +66,7 @@ def load_status_updates(filename, status_collection):
     '''
     pass
 
+
 def save_status_updates(filename, status_collection):
     '''
     Saves all statuses in status_collection into
@@ -75,6 +81,7 @@ def save_status_updates(filename, status_collection):
     '''
     pass
 
+
 def add_user(user_id, email, user_name, user_last_name, user_collection):
     '''
     Creates a new instance of User and stores it in user_collection
@@ -88,6 +95,7 @@ def add_user(user_id, email, user_name, user_last_name, user_collection):
     '''
     pass
 
+
 def update_user(user_id, email, user_name, user_last_name, user_collection):
     '''
     Updates the values of an existing user
@@ -98,6 +106,7 @@ def update_user(user_id, email, user_name, user_last_name, user_collection):
     '''
     pass
 
+
 def delete_user(user_id, user_collection):
     '''
     Deletes a user from user_collection.
@@ -107,6 +116,7 @@ def delete_user(user_id, user_collection):
     - Otherwise, it returns True.
     '''
     pass
+
 
 def search_user(user_id, user_collection):
     '''
@@ -119,6 +129,7 @@ def search_user(user_id, user_collection):
     - Otherwise, it returns None.
     '''
     pass
+
 
 def add_status(user_id, status_id, status_text, status_collection):
     '''
@@ -133,6 +144,7 @@ def add_status(user_id, status_id, status_text, status_collection):
     '''
     pass
 
+
 def update_status(status_id, user_id, status_text, status_collection):
     '''
     Updates the values of an existing status_id
@@ -143,6 +155,7 @@ def update_status(status_id, user_id, status_text, status_collection):
     '''
     pass
 
+
 def delete_status(status_id, status_collection):
     '''
     Deletes a status_id from user_collection.
@@ -152,6 +165,7 @@ def delete_status(status_id, status_collection):
     - Otherwise, it returns True.
     '''
     pass
+
 
 def search_status(status_id, status_collection):
     '''
