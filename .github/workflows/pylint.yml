@@ -25,5 +25,5 @@ jobs:
     - name: Run tests with coverage
       if: always()
       run: |
-        pytest --cov=main.py ./
+        pytest --cov ./
 
