@@ -96,6 +96,7 @@ The instructor will do the following:
 
 # Additional tips #
 
+* As this code is not in a package, make sure to run all commands with the current working directory set to the assignment dir.
 * Use the `csv` library, included in Python for all your file operations with csv files.
 * In Python 3, you iterate through the values in a dictionary by iterating over `dict.values()`, where `dict` is the name of your dictionary.
 * If you use a `setUp()` method in your tests, keep in mind that it will run **before** every test, effectively resetting some of your variables.
