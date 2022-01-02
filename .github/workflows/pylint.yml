@@ -22,8 +22,12 @@ jobs:
       if: always()
       run: |
         pylint `ls -R|grep .py$|xargs`
-    - name: Run tests with coverage
+    - name: Run tests.
       if: always()
       run: |
         pytest --cov ./
 
+    - name: Run tests coverage
+      if: always()
+      run: |
+        pytest --cov --cov-fail-under=100 ./
