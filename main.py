@@ -10,7 +10,7 @@ def init_user_collection():
     '''
     Creates and returns a new instance of UserCollection
     '''
-    pass
+    return users.UserCollection()
 
 
 def init_status_collection():
