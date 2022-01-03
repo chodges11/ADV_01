@@ -28,7 +28,7 @@ jobs:
       run: |
         pylint `ls -R|grep .py$|xargs`
 
-    - name: Run tests.
+    - name: Run tests
       if: always()
       run: |
         pytest ./
