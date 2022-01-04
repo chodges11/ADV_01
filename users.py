@@ -1,23 +1,26 @@
 '''
-Classes for user information for the
-social network project
+Classes for user information for the social network project
 '''
 # pylint: disable=R0903
+
 
 class Users():
     '''
     Contains user information
     '''
+
     def __init__(self, user_id, email, user_name, user_last_name):
         self.user_id = user_id
         self.email = email
         self.user_name = user_name
         self.user_last_name = user_last_name
 
+
 class UserCollection():
     '''
     Contains a collection of Users objects
     '''
+
     def __init__(self):
         self.database = {}
 
