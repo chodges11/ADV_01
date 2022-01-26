@@ -1,3 +1,1 @@
 # .coveragerc to control how coverage is run.
-[run]
-omit = menu.py
