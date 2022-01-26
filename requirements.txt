@@ -1,3 +1,2 @@
-loguru
-peewee
+# extra packages required by this project
 
