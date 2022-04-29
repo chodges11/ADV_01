@@ -3,7 +3,6 @@ main driver for a simple social network project
 """
 
 import csv
-from pathlib import Path
 import users as u
 import user_status as us
 
@@ -56,8 +55,8 @@ def load_users(filename, user_collection):
                                          )
         return True
 
-    except OSError as e:
-        print(f"{type(e)}: {e}")
+    except OSError as error:
+        print(f"{type(error)}: {error}")
         return False
 
 
