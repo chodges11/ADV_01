@@ -12,14 +12,16 @@ def init_user_collection():
     """
     Creates and returns a new instance of UserCollection
     """
-    return u.UserCollection()
+    new_collection = u.UserCollection()
+    return new_collection
 
 
 def init_status_collection():
     """
     Creates and returns a new instance of UserStatusCollection
     """
-    return us.UserStatusCollection()
+    new_status = us.UserStatusCollection()
+    return new_status
 
 
 def load_users(filename, user_collection):
@@ -36,27 +38,29 @@ def load_users(filename, user_collection):
     (such as empty fields in the source CSV file)
     - Otherwise, it returns True.
     """
+    try:
+        with open(filename, 'r') as read_obj:
+            csv_dict_reader = csv.DictReader(read_obj)
+            for row in csv_dict_reader:
+                print(row)
+                user = u.Users(user_id=row["USER_ID"],
+                               email=row["EMAIL"],
+                               user_name=row["NAME"],
+                               user_last_name=row["LASTNAME"]
+                               )
+                print(user)
+                if user.user_id in user_collection:
+                    continue
+                user_collection.add_user(user.user_id,
+                                             user.email,
+                                             user.user_name,
+                                             user.user_last_name
+                                             )
+        return True
 
-
-collection = u.UserCollection
-with open('accounts.csv', 'r') as read_obj:
-    csv_dict_reader = csv.DictReader(read_obj)
-    for row in csv_dict_reader:
-        print(row)
-        user = u.Users(user_id=row["USER_ID"],
-                       email=row["EMAIL"],
-                       user_name=row["NAME"],
-                       user_last_name=row["LASTNAME"]
-                       )
-        print(user)
-        if user.user_id in collection:
-            continue
-        else:
-            u.UserCollection.add_user(user.user_id,
-                                      user.email,
-                                      user.user_name,
-                                      user.user_last_name
-                                      )
+    except OSError as e:
+        print(f"{type(e)}: {e}")
+        return False
 
 
 def save_users(filename, user_collection):
@@ -71,7 +75,17 @@ def save_users(filename, user_collection):
     (such as an invalid filename).
     - Otherwise, it returns True.
     """
-    pass
+
+    try:
+        with open(filename, 'w') as write_obj:
+            csv_dict_writer = csv.DictWriter(write_obj, user_collection.keys())
+            csv_dict_writer.writeheader()
+            csv_dict_writer.writerow(user_collection)
+        return True
+
+    except OSError as e:
+        print(f"{type(e)}: {e}")
+        return False
 
 
 def load_status_updates(filename, status_collection):
@@ -86,7 +100,29 @@ def load_status_updates(filename, status_collection):
       source CSV file)
     - Otherwise, it returns True.
     """
-    pass
+    try:
+        with open(filename, 'r') as read_obj:
+            csv_dict_reader = csv.DictReader(read_obj)
+            for row in csv_dict_reader:
+                print(row)
+                user = u.Users(user_id=row["USER_ID"],
+                               email=row["EMAIL"],
+                               user_name=row["NAME"],
+                               user_last_name=row["LASTNAME"]
+                               )
+                print(user)
+                if user.user_id in status_collection:
+                    continue
+                status_collection.add_user(user.user_id,
+                                             user.email,
+                                             user.user_name,
+                                             user.user_last_name
+                                             )
+        return True
+
+    except OSError as e:
+        print(f"{type(e)}: {e}")
+        return False
 
 
 def save_status_updates(filename, status_collection):
