@@ -12,16 +12,16 @@ def init_user_collection():
     """
     Creates and returns a new instance of UserCollection
     """
-    new_collection = u.UserCollection()
-    return new_collection
+    new_user_collection = u.UserCollection()
+    return new_user_collection
 
 
 def init_status_collection():
     """
     Creates and returns a new instance of UserStatusCollection
     """
-    new_status = us.UserStatusCollection()
-    return new_status
+    new_status_collection = us.UserStatusCollection()
+    return new_status_collection
 
 
 def load_users(filename, user_collection):
@@ -42,20 +42,18 @@ def load_users(filename, user_collection):
         with open(filename, 'r') as read_obj:
             csv_dict_reader = csv.DictReader(read_obj)
             for row in csv_dict_reader:
-                print(row)
                 user = u.Users(user_id=row["USER_ID"],
                                email=row["EMAIL"],
                                user_name=row["NAME"],
                                user_last_name=row["LASTNAME"]
                                )
-                print(user)
                 if user.user_id in user_collection:
                     continue
                 user_collection.add_user(user.user_id,
-                                             user.email,
-                                             user.user_name,
-                                             user.user_last_name
-                                             )
+                                         user.email,
+                                         user.user_name,
+                                         user.user_last_name
+                                         )
         return True
 
     except OSError as e:
@@ -83,8 +81,8 @@ def save_users(filename, user_collection):
             csv_dict_writer.writerow(user_collection)
         return True
 
-    except OSError as e:
-        print(f"{type(e)}: {e}")
+    except OSError as error:
+        print(f"{type(error)}: {error}")
         return False
 
 
@@ -104,24 +102,20 @@ def load_status_updates(filename, status_collection):
         with open(filename, 'r') as read_obj:
             csv_dict_reader = csv.DictReader(read_obj)
             for row in csv_dict_reader:
-                print(row)
-                user = u.Users(user_id=row["USER_ID"],
-                               email=row["EMAIL"],
-                               user_name=row["NAME"],
-                               user_last_name=row["LASTNAME"]
-                               )
-                print(user)
-                if user.user_id in status_collection:
+                user = us.UserStatus(status_id=row["STATUS_ID"],
+                                     user_id=row["USER_ID"],
+                                     status_text=row["STATUS_TEXT"]
+                                     )
+                if user.status_id in status_collection:
                     continue
-                status_collection.add_user(user.user_id,
-                                             user.email,
-                                             user.user_name,
-                                             user.user_last_name
+                status_collection.add_status(user.status_id,
+                                             user.user_id,
+                                             user.status_text
                                              )
         return True
 
-    except OSError as e:
-        print(f"{type(e)}: {e}")
+    except OSError as error:
+        print(f"{type(error)}: {error}")
         return False
 
 
@@ -134,7 +128,18 @@ def save_status_updates(filename, status_collection):
     - Returns False if there are any errors(such an invalid filename).
     - Otherwise, it returns True.
     """
-    pass
+    try:
+        with open(filename, 'w') as write_obj:
+            csv_dict_writer = csv.DictWriter(write_obj,
+                                             status_collection.keys()
+                                             )
+            csv_dict_writer.writeheader()
+            csv_dict_writer.writerow(status_collection)
+        return True
+
+    except OSError as error:
+        print(f"{type(error)}: {error}")
+        return False
 
 
 def add_user(user_id, email, user_name, user_last_name, user_collection):
@@ -148,18 +153,33 @@ def add_user(user_id, email, user_name, user_last_name, user_collection):
       user_collection.add_user() returns False).
     - Otherwise, it returns True.
     """
-    pass
+
+    while user_collection.add_user(user_id,
+                                   email,
+                                   user_name,
+                                   user_last_name
+                                   ):
+        return True
+
+    return False
 
 
-def update_user(user_id, email, user_name, user_last_name, user_collection):
+def modify_user(user_id, email, user_name, user_last_name, user_collection):
     """
-    Updates the values of an existing user
+    Modifies the values of an existing user
 
     Requirements:
     - Returns False if there are any errors.
     - Otherwise, it returns True.
     """
-    pass
+    while user_collection.modify_user(user_id,
+                                      email,
+                                      user_name,
+                                      user_last_name
+                                      ):
+        return True
+
+    return False
 
 
 def delete_user(user_id, user_collection):
@@ -170,7 +190,10 @@ def delete_user(user_id, user_collection):
     - Returns False if there are any errors (such as user_id not found)
     - Otherwise, it returns True.
     """
-    pass
+    while user_collection.delete_user(user_id):
+        return True
+
+    return False
 
 
 def search_user(user_id, user_collection):
@@ -182,7 +205,12 @@ def search_user(user_id, user_collection):
     - If the user is found, returns the corresponding User instance.
     - Otherwise, it returns None.
     """
-    pass
+
+    user_search_results = user_collection.search_user(user_id)
+    if user_search_results[0] is None:
+        return None
+
+    return user_search_results
 
 
 def add_status(user_id, status_id, status_text, status_collection):
@@ -196,18 +224,30 @@ def add_status(user_id, status_id, status_text, status_collection):
       user_collection.add_status() returns False).
     - Otherwise, it returns True.
     """
-    pass
+    while status_collection.add_status(status_id,
+                                       user_id,
+                                       status_text
+                                       ):
+        return True
+
+    return False
 
 
-def update_status(status_id, user_id, status_text, status_collection):
+def modify_status(status_id, user_id, status_text, status_collection):
     """
-    Updates the values of an existing status_id
+    Modifies the values of an existing status_id
 
     Requirements:
     - Returns False if there are any errors.
     - Otherwise, it returns True.
     """
-    pass
+    while status_collection.modify_user(status_id,
+                                       user_id,
+                                       status_text
+                                       ):
+        return True
+
+    return False
 
 
 def delete_status(status_id, status_collection):
@@ -218,7 +258,10 @@ def delete_status(status_id, status_collection):
     - Returns False if there are any errors (such as status_id not found)
     - Otherwise, it returns True.
     """
-    pass
+    while status_collection.delete_user(status_id):
+        return True
+
+    return False
 
 
 def search_status(status_id, status_collection):
@@ -230,4 +273,8 @@ def search_status(status_id, status_collection):
     UserStatus instance.
     - Otherwise, it returns None.
     """
-    pass
+    status_search_results = status_collection.search_status(status_id)
+    if status_search_results[0] is None:
+        return None
+
+    return status_search_results
