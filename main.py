@@ -1,10 +1,13 @@
 """
 main driver for a simple social network project
 """
+# pylint: disable = import-error
 
 import csv
 import users as u
 import user_status as us
+
+# pylint:disable=unspecified-encoding
 
 
 def init_user_collection():
