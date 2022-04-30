@@ -1,12 +1,17 @@
 """Tests for the main.py file"""
 
-import unittest
+# pylint: disable = import-error
 
+import unittest
+from mock import Mock, patch
+# TODO: REMOVE
 import pysnooper
 
 import main as m
 import users as u
 import user_status as us
+
+# pylint: disable=R0904
 
 
 class MainTestCase(unittest.TestCase):
@@ -44,7 +49,7 @@ class MainTestCase(unittest.TestCase):
         """Here's the Test's Docstring."""
         self.assertEqual(m.save_status_updates("fake_file",
                                                us.UserStatusCollection()),
-                         False)
+                         False) # TODO: add assertion here
 
     def test_save_status_updates_success(self):
         """Here's the Test's Docstring."""
@@ -142,14 +147,29 @@ class MainTestCase(unittest.TestCase):
         self.assertEqual(m.search_status("fake_status_id",
                                          us.UserStatusCollection()
                                          ),
-                         None)
+                         None
+                         )
 
     def test_search_status_results(self):
         """
         Tests searching for a status in status_collection, and getting a
         result.
         """
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user_status = us.UserStatus("fake_status_id",
+                                        "fake_user_id",
+                                        "fake_status_text"
+                                        )
+        tmp_status_collection = us.UserStatusCollection()
+        tmp_status_collection.add_status(tmp_user_status.status_id,
+                                         tmp_user_status.user_id,
+                                         tmp_user_status.status_text
+                                         )
+
+        m.us.search_status = Mock(return_value="fake_status_id")
+
+        self.assertEqual(m.search_status(
+            tmp_user_status.status_id, tmp_status_collection),
+            "fake_status_id")
 
 
 if __name__ == '__main__':

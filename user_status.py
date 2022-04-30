@@ -67,3 +67,4 @@ class UserStatusCollection():
             # Fails if the status does not exist
             return UserStatus(None, None, None)
         return self.database[status_id]
+        # I think line 69 is supposed to be 'return self.database[status_text]'
