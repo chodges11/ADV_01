@@ -7,7 +7,7 @@ import user_status as us
 
 
 class MainTestCase(unittest.TestCase):
-    """Here's the Class Docstring."""
+    """Here's the Class Docstring.""" TESTSTSTSTSTSTSSS
 
     def test_init_user_collection(self):
         """Here's the Test's Docstring. Since they are both located at
