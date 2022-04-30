@@ -209,10 +209,10 @@ def search_user(user_id, user_collection):
     """
 
     user_search_results = user_collection.search_user(user_id)
-    if user_search_results[0] is None:
-        return None
+    if user_search_results.user_id is not None:
+        return user_search_results
 
-    return user_search_results
+    return None
 
 
 def add_status(user_id, status_id, status_text, status_collection):

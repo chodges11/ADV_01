@@ -40,29 +40,69 @@ class MainTestCase(unittest.TestCase):
         """Here's the Test's Docstring."""
         self.assertEqual(True, True)  # add assertion here
 
-    def test_save_status_updates(self):
+    def test_save_status_updates_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(m.save_status_updates("fake_file",
+                                               us.UserStatusCollection()),
+                         False)
 
-    def test_add_user(self):
+    def test_save_status_updates_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(True, True)  # TODO: add assertion here
 
-    def test_modify_user(self):
+    def test_add_user_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(True, True)  # TODO: add assertion here
 
-    def test_delete_user(self):
+    def test_add_user_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(m.add_user("fake_user_id",
+                                    "fake_email",
+                                    "fake_user_name",
+                                    "fake_user_last_name",
+                                    u.UserCollection()
+                                    ),
+                         True)
 
-    def test_search_user(self):
+    def test_modify_user_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(m.modify_user("fake_user_id",
+                                       "fake_email",
+                                       "fake_user_name",
+                                       "fake_user_last_name",
+                                       u.UserCollection()
+                                       ),
+                         False)
 
-    def test_add_status(self):
+    def test_modify_user_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(True, True)  # TODO: add assertion here
+
+    def test_delete_user_fails(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(m.delete_user("fake_user_id", u.UserCollection()),
+                         False)
+
+    def test_delete_user_success(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(True, True)  # TODO: add assertion here
+
+    def test_search_user_none(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(m.search_user("fake_user_id", u.UserCollection()),
+                         None)
+
+    def test_search_user_results(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(True, True)  # TODO: add assertion here
+
+    def test_add_status_fails(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(True, True)  # TODO: add assertion here
+
+    def test_add_status_success(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(True, True)  # TODO: add assertion here
 
     def test_modify_status_fails(self):
         """Here's the Test's Docstring."""
