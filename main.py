@@ -243,10 +243,10 @@ def modify_status(status_id, user_id, status_text, status_collection):
     - Returns False if there are any errors.
     - Otherwise, it returns True.
     """
-    while status_collection.modify_user(status_id,
-                                       user_id,
-                                       status_text
-                                       ):
+    while status_collection.modify_status(status_id,
+                                          user_id,
+                                          status_text
+                                          ):
         return True
 
     return False
@@ -260,7 +260,7 @@ def delete_status(status_id, status_collection):
     - Returns False if there are any errors (such as status_id not found)
     - Otherwise, it returns True.
     """
-    while status_collection.delete_user(status_id):
+    while status_collection.delete_status(status_id):
         return True
 
     return False
@@ -276,7 +276,7 @@ def search_status(status_id, status_collection):
     - Otherwise, it returns None.
     """
     status_search_results = status_collection.search_status(status_id)
-    if status_search_results[0] is None:
-        return None
+    if status_search_results.status_id is not None:
+        return status_search_results
 
-    return status_search_results
+    return None
