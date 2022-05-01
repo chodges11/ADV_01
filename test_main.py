@@ -3,10 +3,7 @@
 # pylint: disable = import-error
 
 import unittest
-from mock import Mock, patch
-# TODO: REMOVE
-import pysnooper
-
+from mock import mock_open, patch
 import main as m
 import users as u
 import user_status as us
@@ -33,39 +30,81 @@ class MainTestCase(unittest.TestCase):
         self.assertEqual(type(m.init_status_collection()),
                          type(new_status_collection))
 
-    def test_load_users(self):
+    def test_load_users_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(False,
+                         m.load_status_updates('bad_file',
+                                               m.init_status_collection()
+                                               )
+                         )
 
-    def test_save_users(self):
+    def test_load_users_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(False, m.load_users('bad_file',
+                                            m.init_status_collection())
+                         )
 
-    def test_load_status_updates(self):
+    @patch('main.csv.DictWriter.writerow')
+    def test_save_users_success(self, mock_writerow):
+        tmp_user = u.Users('fake_user_id',
+                           'fake_email',
+                           'fake_user_name',
+                           'fake_user_last_name'
+                           )
+        tmp_user_collection = m.init_user_collection()
+        tmp_user_collection.add_user(
+            tmp_user.user_id,
+            tmp_user.email,
+            tmp_user.user_name,
+            tmp_user.user_last_name
+        )
+        with patch('__main__.open', mock_open()):
+            self.assertEqual(True,
+                             m.save_users(filename='fileName',
+                                          user_collection=
+                                          tmp_user_collection)
+                             )
+            self.assertTrue(mock_writerow.called)
+
+    def test_load_status_updates_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # add assertion here
+        self.assertEqual(True,
+                         m.load_status_updates('status_updates.csv',
+                                               m.init_status_collection()
+                                               )
+                         )
+
+    def test_load_status_updates_fails(self):
+        """Here's the Test's Docstring."""
+        self.assertEqual(False,
+                         m.load_status_updates('bad_file',
+                                               m.init_status_collection()
+                                               )
+                         )
 
     def test_save_status_updates_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(m.save_status_updates("fake_file",
-                                               us.UserStatusCollection()),
-                         False) # TODO: add assertion here
+        self.assertEqual(False, False) # TODO: add assertion here
 
-    @patch('main.csv.DictWriter.writeheader')
-    def test_save_status_updates_success(self, mock_writeheader):
+    @patch('main.csv.DictWriter.writerow')
+    def test_save_status_updates_success(self, mock_writerow):
         """Here's the Test's Docstring."""
         tmp_user_status = us.UserStatus('fake_status_id',
                                         'fake_user_id',
                                         'fake_status_text')
-        tmp_user_status_collection = us.UserStatusCollection()
-        tmp_user_status_collection.add_status(
+        tmp_status_collection = m.init_status_collection()
+        tmp_status_collection.add_status(
             tmp_user_status.status_id,
             tmp_user_status.user_id,
             tmp_user_status.status_text
         )
-        m.save_status_updates(filename='fileName',
-                              status_collection=tmp_user_status_collection)
-        self.assertTrue(mock_writeheader.called)
+        with patch('__main__.open', mock_open()):
+            self.assertEqual(True,
+                             m.save_status_updates(filename='fileName',
+                                                   status_collection=
+                                                   tmp_status_collection)
+                             )
+            self.assertTrue(mock_writerow.called)
 
     def test_add_user_fails(self):
         """Here's the Test's Docstring."""
@@ -74,7 +113,7 @@ class MainTestCase(unittest.TestCase):
                            'fake_user_name',
                            'fake_user_last_name'
                            )
-        tmp_user_collection = u.UserCollection()
+        tmp_user_collection = m.init_user_collection()
         tmp_user_collection.add_user(
             tmp_user.user_id,
             tmp_user.email,
@@ -96,7 +135,7 @@ class MainTestCase(unittest.TestCase):
                                           "fake_email",
                                           "fake_user_name",
                                           "fake_user_last_name",
-                                          u.UserCollection()
+                                          m.init_user_collection()
                                           )
                          )
 
@@ -106,7 +145,7 @@ class MainTestCase(unittest.TestCase):
                                               "fake_email",
                                               "fake_user_name",
                                               "fake_user_last_name",
-                                              u.UserCollection()
+                                              m.init_user_collection()
                                               )
                          )
 
@@ -117,7 +156,7 @@ class MainTestCase(unittest.TestCase):
                            'fake_user_name',
                            'fake_user_last_name'
                            )
-        tmp_user_collection = u.UserCollection()
+        tmp_user_collection = m.init_user_collection()
         tmp_user_collection.add_user(
             tmp_user.user_id,
             tmp_user.email,
@@ -136,7 +175,7 @@ class MainTestCase(unittest.TestCase):
     def test_delete_user_fails(self):
         """Here's the Test's Docstring."""
         self.assertEqual(False,
-                         m.delete_user("fake_user_id", u.UserCollection()
+                         m.delete_user("fake_user_id", m.init_user_collection()
                                        )
                          )
 
@@ -149,7 +188,7 @@ class MainTestCase(unittest.TestCase):
                            'fake_user_name',
                            'fake_user_last_name'
                            )
-        tmp_user_collection = u.UserCollection()
+        tmp_user_collection = m.init_user_collection()
         tmp_user_collection.add_user(
             tmp_user.user_id,
             tmp_user.email,
@@ -158,14 +197,14 @@ class MainTestCase(unittest.TestCase):
         )
         self.assertEqual(True,
                          m.delete_user(tmp_user.user_id,
-                                         tmp_user_collection
-                                         )
+                                       tmp_user_collection
+                                       )
                          )
 
     def test_search_user_none(self):
         """Here's the Test's Docstring."""
         self.assertEqual(None, m.search_user("fake_user_id",
-                                             u.UserCollection()
+                                             m.init_user_collection()
                                              )
                          )
 
@@ -179,7 +218,7 @@ class MainTestCase(unittest.TestCase):
                            'fake_user_name',
                            'fake_user_last_name'
                            )
-        tmp_user_collection = u.UserCollection()
+        tmp_user_collection = m.init_user_collection()
         tmp_user_collection.add_user(
             tmp_user.user_id,
             tmp_user.email,
@@ -197,7 +236,7 @@ class MainTestCase(unittest.TestCase):
         tmp_user_status = us.UserStatus('fake_status_id',
                                         'fake_user_id',
                                         'fake_status_text')
-        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection = m.init_status_collection()
         tmp_user_status_collection.add_status(
             tmp_user_status.status_id,
             tmp_user_status.user_id,
@@ -220,7 +259,7 @@ class MainTestCase(unittest.TestCase):
                          m.add_status(tmp_user_status.status_id,
                                       tmp_user_status.user_id,
                                       tmp_user_status.status_text,
-                                      us.UserStatusCollection()
+                                      m.init_status_collection()
                                       )
                          )
 
@@ -229,7 +268,7 @@ class MainTestCase(unittest.TestCase):
         self.assertEqual(False, m.modify_status("fake_status_id",
                                                 "fake_user_id",
                                                 "fake_status text",
-                                                us.UserStatusCollection()
+                                                m.init_status_collection()
                                                 )
                          )
 
@@ -238,7 +277,7 @@ class MainTestCase(unittest.TestCase):
         tmp_user_status = us.UserStatus('fake_status_id',
                                         'fake_user_id',
                                         'fake_status_text')
-        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection = m.init_status_collection()
         tmp_user_status_collection.add_status(
             tmp_user_status.status_id,
             tmp_user_status.user_id,
@@ -258,7 +297,7 @@ class MainTestCase(unittest.TestCase):
         any result.
         """
         self.assertEqual(False, m.delete_status("fake_status_id",
-                                                us.UserStatusCollection()
+                                                m.init_status_collection()
                                                 )
                          )
 
@@ -270,7 +309,7 @@ class MainTestCase(unittest.TestCase):
         tmp_user_status = us.UserStatus('fake_status_id',
                                         'fake_user_id',
                                         'fake_status_text')
-        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection = m.init_status_collection()
         tmp_user_status_collection.add_status(
             tmp_user_status.status_id,
             tmp_user_status.user_id,
@@ -288,7 +327,7 @@ class MainTestCase(unittest.TestCase):
         finding any results.
         """
         self.assertEqual(None, m.search_status("fake_status_id",
-                                               us.UserStatusCollection()
+                                               m.init_status_collection()
                                                )
                          )
 
@@ -300,7 +339,7 @@ class MainTestCase(unittest.TestCase):
         tmp_user_status = us.UserStatus('fake_status_id',
                                         'fake_user_id',
                                         'fake_status_text')
-        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection = m.init_status_collection()
         tmp_user_status_collection.add_status(
             tmp_user_status.status_id,
             tmp_user_status.user_id,

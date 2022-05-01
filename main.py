@@ -2,7 +2,7 @@
 main driver for a simple social network project
 """
 # pylint: disable = import-error
-import pysnooper
+
 import csv
 import users as u
 import user_status as us
@@ -76,11 +76,12 @@ def save_users(filename, user_collection):
     - Otherwise, it returns True.
     """
 
+    csv_columns = ['USER_ID', 'EMAIL', 'NAME', 'LASTNAME']
     try:
-        with open(filename, 'w') as write_obj:
-            csv_dict_writer = csv.DictWriter(write_obj, user_collection.keys())
-            csv_dict_writer.writeheader()
-            csv_dict_writer.writerow(user_collection)
+        with open(filename, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            writer.writeheader()
+            writer.writerow(user_collection)
         return True
 
     except OSError as error:
@@ -101,20 +102,16 @@ def load_status_updates(filename, status_collection):
     - Otherwise, it returns True.
     """
     try:
-        with open(filename, 'r') as read_obj:
-            csv_dict_reader = csv.DictReader(read_obj)
-            for row in csv_dict_reader:
-                user = us.UserStatus(status_id=row["STATUS_ID"],
-                                     user_id=row["USER_ID"],
-                                     status_text=row["STATUS_TEXT"]
-                                     )
-
-                if user.status_id in status_collection:
-                    continue
-                status_collection.add_status(user.status_id,
+        with open(filename, 'r') as csvfile:
+            status_collection = csv.DictReader(csvfile)
+    """
+            if status_id in status_collection:
+                continue
+            status_collection.add_status(user.status_id,
                                              user.user_id,
                                              user.status_text
                                              )
+    """
         return True
 
     except OSError as error:
@@ -131,13 +128,12 @@ def save_status_updates(filename, status_collection):
     - Returns False if there are any errors(such an invalid filename).
     - Otherwise, it returns True.
     """
+    csv_columns = ['STATUS_ID', 'USER_ID', 'STATUS_TEXT']
     try:
-        with open(filename, 'w') as write_obj:
-            csv_dict_writer = csv.DictWriter(write_obj,
-                                             status_collection.keys()
-                                             )
-            csv_dict_writer.writeheader()
-            csv_dict_writer.writerow(status_collection)
+        with open(filename, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            writer.writeheader()
+            writer.writerow(status_collection)
         return True
 
     except OSError as error:
@@ -163,7 +159,6 @@ def add_user(user_id, email, user_name, user_last_name, user_collection):
                                    user_last_name
                                    ):
         return True
-
     return False
 
 
@@ -181,7 +176,6 @@ def modify_user(user_id, email, user_name, user_last_name, user_collection):
                                       user_last_name
                                       ):
         return True
-
     return False
 
 
@@ -195,7 +189,6 @@ def delete_user(user_id, user_collection):
     """
     while user_collection.delete_user(user_id):
         return True
-
     return False
 
 
@@ -234,7 +227,8 @@ def add_status(status_id, user_id, status_text, status_collection):
     while status_collection.add_status(new_user_status.status_id,
                                        new_user_status.user_id,
                                        new_user_status.status_text
-                                       ):return True
+                                       ):
+        return True
     return False
 
 
@@ -251,7 +245,6 @@ def modify_status(status_id, user_id, status_text, status_collection):
                                           status_text
                                           ):
         return True
-
     return False
 
 
@@ -265,7 +258,6 @@ def delete_status(status_id, status_collection):
     """
     while status_collection.delete_status(status_id):
         return True
-
     return False
 
 
@@ -281,5 +273,4 @@ def search_status(status_id, status_collection):
     status_search_results = status_collection.search_status(status_id)
     if status_search_results.status_id is not None:
         return status_search_results
-
     return None
