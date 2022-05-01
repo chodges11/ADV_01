@@ -103,33 +103,73 @@ class MainTestCase(unittest.TestCase):
 
     def test_add_status_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user_status = us.UserStatus('fake_status_id',
+                                        'fake_user_id',
+                                        'fake_status_text')
+        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection.add_status(
+            tmp_user_status.status_id,
+            tmp_user_status.user_id,
+            tmp_user_status.status_text
+        )
+        self.assertEqual(False,
+                         m.modify_status(tmp_user_status.status_id,
+                                         tmp_user_status.user_id,
+                                         tmp_user_status.status_text,
+                                         tmp_user_status_collection
+                                         )
+                         )
 
     def test_add_status_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user_status = us.UserStatus('fake_status_id',
+                                        'fake_user_id',
+                                        'fake_status_text')
+        tmp_user_status_collection = us.UserStatusCollection()
+        self.assertEqual(True,
+                         m.add_status(tmp_user_status.status_id,
+                                      tmp_user_status.user_id,
+                                      tmp_user_status.status_text,
+                                      tmp_user_status_collection
+                                      )
+                         )
 
     def test_modify_status_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(m.modify_status("fake_status_id",
-                                         "fake_user_id",
-                                         "fake_status text",
-                                         us.UserStatusCollection()
-                                         ),
-                         False)
+        self.assertEqual(False, m.modify_status("fake_status_id",
+                                                "fake_user_id",
+                                                "fake_status text",
+                                                us.UserStatusCollection()
+                                                )
+                         )
 
     def test_modify_status_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user_status = us.UserStatus('fake_status_id',
+                                        'fake_user_id',
+                                        'fake_status_text')
+        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection.add_status(
+            tmp_user_status.status_id,
+            tmp_user_status.user_id,
+            tmp_user_status.status_text
+        )
+        self.assertEqual(True,
+                         m.modify_status(tmp_user_status.status_id,
+                                         tmp_user_status.user_id,
+                                         tmp_user_status.status_text,
+                                         tmp_user_status_collection
+                                         )
+                         )
 
     def test_delete_status_false(self):
         """
-        Tests searching for a status_id in status_collection, and not
-        finding any result.
+        Tests searching for a status_id in status_collection, and deleting
+        any result.
         """
         self.assertEqual(False, m.delete_status("fake_status_id",
-                                         us.UserStatusCollection()
-                                         )
+                                                us.UserStatusCollection()
+                                                )
                          )
 
     def test_delete_status_results(self):
@@ -146,9 +186,8 @@ class MainTestCase(unittest.TestCase):
             tmp_user_status.user_id,
             tmp_user_status.status_text
         )
-
         self.assertEqual(True,
-                         m.delete_status('fake_status_id',
+                         m.delete_status(tmp_user_status.status_id,
                                          tmp_user_status_collection
                                          )
                          )
@@ -177,11 +216,10 @@ class MainTestCase(unittest.TestCase):
             tmp_user_status.user_id,
             tmp_user_status.status_text
         )
-
-        self.assertEqual(tmp_user_status_collection,
-                         m.search_status('fake_status_id',
+        self.assertEqual(tmp_user_status.status_text,
+                         m.search_status(tmp_user_status.status_id,
                                          tmp_user_status_collection
-                                         )
+                                         ).status_text
                          )
 
 

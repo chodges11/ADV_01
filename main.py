@@ -2,7 +2,7 @@
 main driver for a simple social network project
 """
 # pylint: disable = import-error
-
+import pysnooper
 import csv
 import users as u
 import user_status as us
@@ -227,6 +227,11 @@ def add_status(user_id, status_id, status_text, status_collection):
       user_collection.add_status() returns False).
     - Otherwise, it returns True.
     """
+    new_user_status = us.UserStatus(status_id,
+                                    user_id,
+                                    status_text
+                                    )
+
     while status_collection.add_status(status_id,
                                        user_id,
                                        status_text
