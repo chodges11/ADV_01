@@ -1,0 +1,9 @@
+C:\Program Files\JetBrains\PyCharm 2022.1\jbr\bin
+C:\Program Files\JetBrains\PyCharm 2022.1\plugins\python\helpers\coverage_runner
+C:\Program Files\JetBrains\PyCharm 2022.1\plugins\python\helpers\coverage_runner
+C:\Program Files\JetBrains\PyCharm 2022.1\plugins\python\helpers\coveragepy
+C:\Users\charl\AppData\Local\Programs\Python\Python310\python310.zip
+C:\Users\charl\AppData\Local\Programs\Python\Python310\DLLs
+C:\Users\charl\AppData\Local\Programs\Python\Python310\lib
+C:\Users\charl\AppData\Local\Programs\Python\Python310
+C:\Users\charl\AppData\Local\Programs\Python\Python310\lib\site-packages
