@@ -102,16 +102,19 @@ def load_status_updates(filename, status_collection):
     - Otherwise, it returns True.
     """
     try:
-        with open(filename, 'r') as csvfile:
-            status_collection = csv.DictReader(csvfile)
-    """
-            if status_id in status_collection:
-                continue
-            status_collection.add_status(user.status_id,
+        with open(filename, 'r') as read_obj:
+            csv_dict_reader = csv.DictReader(read_obj)
+            for row in csv_dict_reader:
+                user = us.UserStatus(status_id=row["STATUS_ID"],
+                                     user_id=row["USER_ID"],
+                                     status_text=row["STATUS_TEXT"],
+                                     )
+                if user.user_id in status_collection:
+                    continue
+                status_collection.add_status(user.status_id,
                                              user.user_id,
-                                             user.status_text
-                                             )
-    """
+                                             user.status_text,
+                                              )
         return True
 
     except OSError as error:

@@ -32,8 +32,8 @@ class MainTestCase(unittest.TestCase):
 
     def test_load_users_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(False,
-                         m.load_status_updates('bad_file',
+        self.assertEqual(True,
+                         m.load_status_updates('status_updates.csv',
                                                m.init_status_collection()
                                                )
                          )
@@ -81,10 +81,6 @@ class MainTestCase(unittest.TestCase):
                                                m.init_status_collection()
                                                )
                          )
-
-    def test_save_status_updates_fails(self):
-        """Here's the Test's Docstring."""
-        self.assertEqual(False, False) # TODO: add assertion here
 
     @patch('main.csv.DictWriter.writerow')
     def test_save_status_updates_success(self, mock_writerow):
