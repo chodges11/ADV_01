@@ -51,55 +51,146 @@ class MainTestCase(unittest.TestCase):
                                                us.UserStatusCollection()),
                          False) # TODO: add assertion here
 
-    def test_save_status_updates_success(self):
+    @patch('main.csv.DictWriter.writeheader')
+    def test_save_status_updates_success(self, mock_writeheader):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user_status = us.UserStatus('fake_status_id',
+                                        'fake_user_id',
+                                        'fake_status_text')
+        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection.add_status(
+            tmp_user_status.status_id,
+            tmp_user_status.user_id,
+            tmp_user_status.status_text
+        )
+        m.save_status_updates(filename='fileName',
+                              status_collection=tmp_user_status_collection)
+        self.assertTrue(mock_writeheader.called)
 
     def test_add_user_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user = u.Users('fake_user_id',
+                           'fake_email',
+                           'fake_user_name',
+                           'fake_user_last_name'
+                           )
+        tmp_user_collection = u.UserCollection()
+        tmp_user_collection.add_user(
+            tmp_user.user_id,
+            tmp_user.email,
+            tmp_user.user_name,
+            tmp_user.user_last_name
+        )
+        self.assertEqual(False,
+                         m.add_user('fake_user_id',
+                                    'fake_email',
+                                    'fake_user_name',
+                                    'fake_user_last_name',
+                                    tmp_user_collection
+                                    )
+                         )
 
     def test_add_user_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(m.add_user("fake_user_id",
-                                    "fake_email",
-                                    "fake_user_name",
-                                    "fake_user_last_name",
-                                    u.UserCollection()
-                                    ),
-                         True)
+        self.assertEqual(True, m.add_user("fake_user_id",
+                                          "fake_email",
+                                          "fake_user_name",
+                                          "fake_user_last_name",
+                                          u.UserCollection()
+                                          )
+                         )
 
     def test_modify_user_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(m.modify_user("fake_user_id",
-                                       "fake_email",
-                                       "fake_user_name",
-                                       "fake_user_last_name",
-                                       u.UserCollection()
-                                       ),
-                         False)
+        self.assertEqual(False, m.modify_user("fake_user_id",
+                                              "fake_email",
+                                              "fake_user_name",
+                                              "fake_user_last_name",
+                                              u.UserCollection()
+                                              )
+                         )
 
     def test_modify_user_success(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user = u.Users('fake_user_id',
+                           'fake_email',
+                           'fake_user_name',
+                           'fake_user_last_name'
+                           )
+        tmp_user_collection = u.UserCollection()
+        tmp_user_collection.add_user(
+            tmp_user.user_id,
+            tmp_user.email,
+            tmp_user.user_name,
+            tmp_user.user_last_name
+        )
+        self.assertEqual(True,
+                         m.modify_user(tmp_user.user_id,
+                                       tmp_user.email,
+                                       tmp_user.user_name,
+                                       tmp_user.user_last_name,
+                                       tmp_user_collection
+                                       )
+                         )
 
     def test_delete_user_fails(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(m.delete_user("fake_user_id", u.UserCollection()),
-                         False)
+        self.assertEqual(False,
+                         m.delete_user("fake_user_id", u.UserCollection()
+                                       )
+                         )
 
     def test_delete_user_success(self):
-        """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        """
+        Tests searching for a user_id in user_collection, and getting a result.
+        """
+        tmp_user = u.Users('fake_user_id',
+                           'fake_email',
+                           'fake_user_name',
+                           'fake_user_last_name'
+                           )
+        tmp_user_collection = u.UserCollection()
+        tmp_user_collection.add_user(
+            tmp_user.user_id,
+            tmp_user.email,
+            tmp_user.user_name,
+            tmp_user.user_last_name
+        )
+        self.assertEqual(True,
+                         m.delete_user(tmp_user.user_id,
+                                         tmp_user_collection
+                                         )
+                         )
 
     def test_search_user_none(self):
         """Here's the Test's Docstring."""
-        self.assertEqual(m.search_user("fake_user_id", u.UserCollection()),
-                         None)
+        self.assertEqual(None, m.search_user("fake_user_id",
+                                             u.UserCollection()
+                                             )
+                         )
 
     def test_search_user_results(self):
-        """Here's the Test's Docstring."""
-        self.assertEqual(True, True)  # TODO: add assertion here
+        """
+        Tests searching for a user in a user_collection, and getting a
+        result.
+        """
+        tmp_user = u.Users('fake_user_id',
+                           'fake_email',
+                           'fake_user_name',
+                           'fake_user_last_name'
+                           )
+        tmp_user_collection = u.UserCollection()
+        tmp_user_collection.add_user(
+            tmp_user.user_id,
+            tmp_user.email,
+            tmp_user.user_name,
+            tmp_user.user_last_name
+        )
+        self.assertEqual(tmp_user.user_id,
+                         m.search_user(tmp_user.user_id,
+                                       tmp_user_collection
+                                       ).user_id
+                         )
 
     def test_add_status_fails(self):
         """Here's the Test's Docstring."""
@@ -113,11 +204,11 @@ class MainTestCase(unittest.TestCase):
             tmp_user_status.status_text
         )
         self.assertEqual(False,
-                         m.modify_status(tmp_user_status.status_id,
-                                         tmp_user_status.user_id,
-                                         tmp_user_status.status_text,
-                                         tmp_user_status_collection
-                                         )
+                         m.add_status('fake_status_id',
+                                      'fake_user_id',
+                                      'fake_status_text',
+                                      tmp_user_status_collection
+                                      )
                          )
 
     def test_add_status_success(self):
@@ -125,12 +216,11 @@ class MainTestCase(unittest.TestCase):
         tmp_user_status = us.UserStatus('fake_status_id',
                                         'fake_user_id',
                                         'fake_status_text')
-        tmp_user_status_collection = us.UserStatusCollection()
         self.assertEqual(True,
                          m.add_status(tmp_user_status.status_id,
                                       tmp_user_status.user_id,
                                       tmp_user_status.status_text,
-                                      tmp_user_status_collection
+                                      us.UserStatusCollection()
                                       )
                          )
 

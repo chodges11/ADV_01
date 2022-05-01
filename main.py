@@ -216,13 +216,13 @@ def search_user(user_id, user_collection):
     return None
 
 
-def add_status(user_id, status_id, status_text, status_collection):
+def add_status(status_id, user_id, status_text, status_collection):
     """
     Creates a new instance of UserStatus and stores it in
-    user_collection(which is an instance of UserStatusCollection)
+    status_collection(which is an instance of UserStatusCollection)
 
     Requirements:
-    - status_id cannot already exist in user_collection.
+    - status_id cannot already exist in status_collection.
     - Returns False if there are any errors (for example, if
       user_collection.add_status() returns False).
     - Otherwise, it returns True.
@@ -231,13 +231,10 @@ def add_status(user_id, status_id, status_text, status_collection):
                                     user_id,
                                     status_text
                                     )
-
     while status_collection.add_status(new_user_status.status_id,
-                                       user_id,
-                                       status_text
-                                       ):
-        return True
-
+                                       new_user_status.user_id,
+                                       new_user_status.status_text
+                                       ):return True
     return False
 
 
