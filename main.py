@@ -232,7 +232,7 @@ def add_status(user_id, status_id, status_text, status_collection):
                                     status_text
                                     )
 
-    while status_collection.add_status(status_id,
+    while status_collection.add_status(new_user_status.status_id,
                                        user_id,
                                        status_text
                                        ):
