@@ -108,6 +108,7 @@ def load_status_updates(filename, status_collection):
                                      user_id=row["USER_ID"],
                                      status_text=row["STATUS_TEXT"]
                                      )
+
                 if user.status_id in status_collection:
                     continue
                 status_collection.add_status(user.status_id,

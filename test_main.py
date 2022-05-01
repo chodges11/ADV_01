@@ -127,27 +127,40 @@ class MainTestCase(unittest.TestCase):
         Tests searching for a status_id in status_collection, and not
         finding any result.
         """
-        self.assertEqual(m.delete_status("fake_status_id",
+        self.assertEqual(False, m.delete_status("fake_status_id",
                                          us.UserStatusCollection()
-                                         ),
-                         False)
+                                         )
+                         )
 
     def test_delete_status_results(self):
         """
         Tests searching for a status_id in status_collection, and not
         getting a result.
         """
-        self.assertEqual(True, True)  # TODO: add assertion here
+        tmp_user_status = us.UserStatus('fake_status_id',
+                                        'fake_user_id',
+                                        'fake_status_text')
+        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection.add_status(
+            tmp_user_status.status_id,
+            tmp_user_status.user_id,
+            tmp_user_status.status_text
+        )
+
+        self.assertEqual(True,
+                         m.delete_status('fake_status_id',
+                                         tmp_user_status_collection
+                                         )
+                         )
 
     def test_search_status_none(self):
         """
         Tests searching for a status in status_collection, and not
         finding any results.
         """
-        self.assertEqual(m.search_status("fake_status_id",
-                                         us.UserStatusCollection()
-                                         ),
-                         None
+        self.assertEqual(None, m.search_status("fake_status_id",
+                                               us.UserStatusCollection()
+                                               )
                          )
 
     def test_search_status_results(self):
@@ -155,21 +168,21 @@ class MainTestCase(unittest.TestCase):
         Tests searching for a status in status_collection, and getting a
         result.
         """
-        tmp_user_status = us.UserStatus("fake_status_id",
-                                        "fake_user_id",
-                                        "fake_status_text"
-                                        )
-        tmp_status_collection = us.UserStatusCollection()
-        tmp_status_collection.add_status(tmp_user_status.status_id,
-                                         tmp_user_status.user_id,
-                                         tmp_user_status.status_text
+        tmp_user_status = us.UserStatus('fake_status_id',
+                                        'fake_user_id',
+                                        'fake_status_text')
+        tmp_user_status_collection = us.UserStatusCollection()
+        tmp_user_status_collection.add_status(
+            tmp_user_status.status_id,
+            tmp_user_status.user_id,
+            tmp_user_status.status_text
+        )
+
+        self.assertEqual(tmp_user_status_collection,
+                         m.search_status('fake_status_id',
+                                         tmp_user_status_collection
                                          )
-
-        m.us.search_status = Mock(return_value="fake_status_id")
-
-        self.assertEqual(m.search_status(
-            tmp_user_status.status_id, tmp_status_collection),
-            "fake_status_id")
+                         )
 
 
 if __name__ == '__main__':
