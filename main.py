@@ -49,7 +49,7 @@ def load_users(filename, user_collection):
                                user_name=row["NAME"],
                                user_last_name=row["LASTNAME"]
                                )
-                if user.user_id in user_collection:
+                if user.user_id in user_collection.values:
                     continue
                 user_collection.add_user(user.user_id,
                                          user.email,
@@ -109,7 +109,7 @@ def load_status_updates(filename, status_collection):
                                      user_id=row["USER_ID"],
                                      status_text=row["STATUS_TEXT"],
                                      )
-                if user.user_id in status_collection:
+                if user.user_id in status_collection.values:
                     continue
                 status_collection.add_status(user.status_id,
                                              user.user_id,
